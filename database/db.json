@@ -1,0 +1,22 @@
+{
+  "projects": [
+    {
+      "title": "hello 12",
+      "detail": "this is testing 12",
+      "complete": true,
+      "id": 1
+    },
+    {
+      "title": "another testing  update",
+      "detail": "hello world update",
+      "complete": true,
+      "id": 2
+    },
+    {
+      "title": "learning vue",
+      "detail": "hello",
+      "complete": true,
+      "id": 3
+    }
+  ]
+}

@@ -1,18 +1,70 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h2>Projects</h2>
+    <FilterProject @currentValue="current = $event" :current="current" ></FilterProject>
+    <div class="" v-for="project in filterProjects" :key="project.id">
+      <SingleProject :project="project" @deleteProject="deleteProject" @completeProject="completeProject" ></SingleProject>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
+import FilterProject from '../components/FilterProject'
+import SingleProject from '../components/SingleProject'
 export default {
+  data(){
+    return {
+      projects : [],
+      current : ""
+    }
+  },
   name: 'HomeView',
   components: {
-    HelloWorld
+    FilterProject,
+    SingleProject,
+
+  },
+  methods : {
+    deleteProject(deleteId){
+      this.projects = this.projects.filter((project)=>{
+        return project.id != deleteId
+      })
+    },
+    completeProject(completeId){
+      let completeProject = this.projects.find((project)=>{
+        return project.id == completeId
+      })
+      completeProject.complete = !completeProject.complete
+    },
+    // currentValue(value){
+    //   return this.current = value
+    // }
+  },
+  computed : {
+    filterProjects(){
+      return this.projects.filter((project)=>{
+        if(this.current == 'complete'){
+          return project.complete == true
+        }
+        if(this.current == 'ongoing'){
+          return project.complete == false
+        }
+        return project
+      })
+    }
+  },
+  mounted(){
+    fetch('http://localhost:3000/projects')
+    .then((response)=>{
+      return response.json()
+    })
+    .then((data)=>{
+      this.projects = data
+    })
+    .catch((error)=> {
+      console.log(error)
+    })
   }
 }
 </script>
